@@ -1,61 +1,43 @@
-import Platform from './platform.js';
 import Player from './player.js';
+import Bullet from './bullet.js';
 
-/**
- * Escena principal del juego. La escena se compone de una serie de plataformas 
- * sobre las que se sitúan las bases en las podrán aparecer las estrellas. 
- * El juego comienza generando aleatoriamente una base sobre la que generar una estrella. 
- * Cada vez que el jugador recoge la estrella, aparece una nueva en otra base.
- * El juego termina cuando el jugador ha recogido 10 estrellas.
- * @extends Phaser.Scene
- */
 export default class Level extends Phaser.Scene {
-  /**
-   * Constructor de la escena
-   */
   constructor() {
-    super({ key: 'level' });
+    super({ key: 'level'});
   }
 
-  /**
-   * Creación de los elementos de la escena principal de juego
-   */
   create() {
-    this.stars = 10;
-    this.bases = this.add.group();
-    this.player = new Player(this, 200, 300);
+    // Pool de balas
+    this.bullets = this.physics.add.group({
+      classType: Bullet,
+      maxSize: 30,            // Límite de balas simultáneas en pantalla
+      runChildUpdate: true    // Vital para que se ejecute el preUpdate de la clase Bullet
+    });
+    
+    // El jugador
+    this.player = new Player(this, 125, 350, this.bullets);
 
-    new Platform(this, this.player, this.bases, 150, 350);
-    new Platform(this, this.player, this.bases, 850, 350);
-    new Platform(this, this.player, this.bases, 500, 200);
-    new Platform(this, this.player, this.bases, 150, 100);
-    new Platform(this, this.player, this.bases, 850, 100);
-    this.spawn();
+    // Pool de enemigos
+    this.enemies = this.physics.add.group();
+
+    // Colisiones
+    this.physics.add.overlap(this.bullets, this.enemies, this.hitEnemy, null, this);
   }
 
-  /**
-   * Genera una estrella en una de las bases del escenario
-   * @param {Array<Base>} from Lista de bases sobre las que se puede crear una estrella
-   * Si es null, entonces se crea aleatoriamente sobre cualquiera de las bases existentes
-   */
-  spawn(from = null) {
-    Phaser.Math.RND.pick(from || this.bases.children.entries).spawn();
+  update(time, delta) {
+
   }
 
-  /**
-   * Método que se ejecuta al coger una estrella. Se pasa la base
-   * sobre la que estaba la estrella cogida para evitar repeticiones
-   * @param {Base} base La base sobre la que estaba la estrella que se ha cogido
-   */
-  starPickt (base) {
+  hitEnemy(bullet, enemy) {
+    // Devolvemos la bala al pool
+    bullet.setActive(false);
+    bullet.setVisible(false);
+    bullet.body.stop();
+
+    // Destruimos al enemigo
+    enemy.destroy();
+
+    // Sumamos la puntuación
     this.player.point();
-      if (this.player.score == this.stars) {
-        this.scene.start('end');
-      }
-      else {
-        let s = this.bases.children.entries;
-        this.spawn(s.filter(o => o !== base));
-
-      }
   }
 }

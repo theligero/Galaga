@@ -1,3 +1,8 @@
+@font-face {
+  font-family: 'arcade';
+  src: url('../assets/fonts/arcade.ttf') format('truetype');
+}
+
 h1 {
   text-align: center;
 }
