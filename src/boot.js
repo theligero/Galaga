@@ -25,6 +25,9 @@ export default class Boot extends Phaser.Scene {
 
     // Spritesheets
     this.load.spritesheet('player', 'sprites/player.png', { frameWidth: 16, frameHeight: 16});
+
+    // Sonidos
+    this.load.audio('shot', 'sounds/shot.mp3');
   }
 
   /**
@@ -32,6 +35,6 @@ export default class Boot extends Phaser.Scene {
    * nivel del juego
    */
   create() {
-    this.scene.start('level');
+    this.scene.start('menu');
   }
 }

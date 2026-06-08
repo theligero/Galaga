@@ -1,5 +1,3 @@
-import Star from './star.js';
-
 export default class Player extends Phaser.GameObjects.Sprite {
   constructor(scene, x, y, bulletGroup) {
     super(scene, x, y, 'player', 6);
@@ -80,7 +78,8 @@ export default class Player extends Phaser.GameObjects.Sprite {
       let bullet = this.bullets.get();
       if (bullet) {
         bullet.fire(this.x, this.y - 15);
-        this.lastFired = t + 200;
+        this.lastFired = t + 500;
+        this.scene.sound.play('shot');
       }
     }
   }
