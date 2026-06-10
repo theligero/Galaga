@@ -79,9 +79,9 @@ export default class Level extends Phaser.Scene {
     if (isDead) {
       // Lógica de puntuación dependiendo del tipo de enemigo
       let points = (enemy.enemyType === 'blue_crab') ? 2 : 1;
-      for (let i = 0; i < points; i++) {
-        this.player.point();
-      }
+      // Ahora la puntuación la gestiona el nivel, no el jugador
+      this.score += points;
+      console.log("Score interno: " + this.score); // log temporal
     }
   }
 }

@@ -33,12 +33,18 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
      */
     takeDamage(amount) {
         this.hp -= amount;
-        if (this.hp <= 0) {
-            // Animaciones de explosión
-            this.destroy();
-            return true; // ha muerto
+
+        // Si sobrevive al impacto, parpadea en rojo
+        if (this.hp > 0) {
+            this.setTint(0xff7777);
+            this.scene.time.delayedCall(90, () => {
+                if (this.active) this.clearTint();
+            });
+            return false; // sigue vivo
         }
-        return false; // sigue vivo
+
+        this.destroy();
+        return true; // ha muerto
     }
 
     attack() {
