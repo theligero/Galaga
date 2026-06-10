@@ -6,21 +6,13 @@ export default class Level extends Phaser.Scene {
   constructor() {
     super({ key: 'level'});
 
-    // Definición de niveles
-    this.levelConfig = [
-      {
-        id: 1,
-        waves: [
-          { type: 'blue_bee', x: 60, y: 40, hp: 1 },
-          { type: 'orange_butterfly', x: 196, y: 40, hp: 1 },
-          { type: 'blue_crab', x: 128, y: 20, hp: 2 }
-        ]
-      }
-    ];
-    this.currentLevel = 0;
+    // Definimos el ancho jugable temporal
+    this.PLAYFIELD_WIDTH = 256;
   }
 
   create() {
+    this.score = 0;
+
     // Pool de balas
     this.bullets = this.physics.add.group({
       classType: Bullet,
@@ -28,18 +20,18 @@ export default class Level extends Phaser.Scene {
       runChildUpdate: true
     });
 
-    this.player = new Player(this, 125, 200, this.bullets);
+    this.player = new Player(this, this.PLAYFIELD_WIDTH / 2, 200, this.bullets);
 
     // Pool de enemigos modificado para ejecutar preUpdate
     this.enemies = this.physics.add.group({
       runChildUpdate: true
     });
 
-    // Cargamos la primera oleada
-    this.loadLevel(this.currentLevel);
-
     // Colisiones
     this.physics.add.overlap(this.bullets, this.enemies, this.hitEnemy, null, this);
+
+    // Cargamos la formación dinámica
+    this.loadStageFormation();
 
     // Temporizador para que un enemigo aleatorio ataque cada x segundos
     this.time.addEvent({
@@ -50,22 +42,55 @@ export default class Level extends Phaser.Scene {
     });
   }
 
-  loadLevel(index) {
-    const levelData = this.levelConfig[index];
-    levelData.waves.forEach(enemyData => {
-      let enemy = new Enemy(this, enemyData.x, enemyData.y, enemyData.type, 
-        enemyData.hp, enemyData.type);
-      this.enemies.add(enemy);
-    })
+  loadStageFormation() {
+    this.enemies.clear(true, true);
+
+    // Definición de filas
+    const rows = [
+      { type: 'blue_crab', hp: 2, y: 34, count: 4, startX: 86 },
+      { type: 'orange_butterfly', hp: 1, y: 62, count: 8, startX: 44 },
+      { type: 'orange_butterfly', hp: 1, y: 86, count: 8, startX: 44 },
+      { type: 'blue_bee', hp: 1, y: 112, count: 10, startX: 32 },
+      { type: 'blue_bee', hp: 1, y: 136, count: 10, startX: 32 }
+    ];
+
+    let order = 0;
+    rows.forEach(row => {
+      for (let i = 0; i < row.count; i++) {
+        const gridX = row.startX + i * 21;
+        const enemy = new Enemy(this, gridX, row.y, row.type, row.hp, row.type);
+
+        // Lógica para que entren alternando desde izquierda y derecha
+        const fromLeft = order % 2 === 0;
+        const startX = fromLeft ? -24 : this.PLAYFIELD_WIDTH + 24;
+        const startY = 18 + (order % 5) * 18;
+
+        // Llamamos al nuevo método con delay
+        enemy.enterFormation(startX, startY, order * 55);
+        order++;
+      }
+    });
   }
 
   triggerEnemyAttack() {
     const aliveEnemies = this.enemies.getChildren().filter(e => e.active && e.state === 'GRID');
-    if (aliveEnemies.length > 0) {
-      // Selecciona un enemigo aleatorio de la formación para que rompa filas
-      const randomEnemy = Phaser.Utils.Array.GetRandom(aliveEnemies);
-      randomEnemy.attack();
+    if (aliveEnemies.length === 0) return;
+
+    // Seleccionamos atacantes
+    const attackers = [Phaser.Utils.Array.GetRandom(aliveEnemies)];
+
+    // De vez en cuando baja una pareja, para que recuerde más al patrón clásico
+    if (Phaser.Math.Between(0, 100) > 72 && aliveEnemies.length > 1) {
+      const second = Phaser.Utils.Array.GetRandom(aliveEnemies.filter(e => e !== attackers[0]));
+      attackers.push(second);
     }
+
+    attackers.forEach((enemy, index) => {
+      this.time.delayedCall(index * 280, () => {
+        if (!enemy.active) return;
+        enemy.attack(this.player);
+      });
+    });
   }
 
   hitEnemy(bullet, enemy) {
