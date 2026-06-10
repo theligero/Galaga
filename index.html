@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <link rel="shortcut icon" href="assets/icon.png" type="image/png" />
-    <meta name="viewport" content="width=device-width, initial-scale=2.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/game.css">
     <script src="./lib/phaser.js"></script>
 
@@ -12,7 +12,56 @@
 </head>
 
 <body>
-    <h1>Galaga Reimagined</h1>
+    <header class="page-header">
+        <h1>Galaga Reimagined</h1>
+        <p class="studio">Estudio Individual PVLI</p>
+    </header>
+
+    <main>
+        <section class="game-section">
+            <h2>Juego</h2>
+            <div id="game-container" aria-label="Canvas del juego Galaga Reimagined"></div>
+        </section>
+
+        <section class="info-grid">
+            <article>
+                <h2>Descripción</h2>
+                <p>
+                    Galaga Reimagined es un arcade de disparos de pantalla fija inspirado en Galaga.
+                    Controla una nave, destruye formaciones de enemigos alienígenas, esquiva sus disparos
+                    y sobrevive el mayor número de fases posible.
+                </p>
+            </article>
+
+            <article>
+                <h2>Instrucciones</h2>
+                <ul>
+                    <li><strong>Mover:</strong> flechas izquierda/derecha o teclas A/D.</li>
+                    <li><strong>Disparar:</strong> barra espaciadora.</li>
+                    <li><strong>Empezar:</strong> Space, Enter o clic.</li>
+                    <li><strong>Objetivo:</strong> destruir enemigos, sumar puntos y conservar vidas.</li>
+                </ul>
+            </article>
+
+            <article>
+                <h2>Autores y créditos</h2>
+                <p>
+                    Proyecto universitario individual desarrollado para PVLI.
+                    Autor: <strong>Ignacio Ligero Martín</strong>.
+                </p>
+                <p>
+                    Proyecto académico inspirado en el arcade Galaga. Recursos documentados en
+                    <a href="./assets.md">assets.md</a>.
+                </p>
+            </article>
+
+            <article>
+                <h2>Redes sociales</h2>
+                <p>No se han creado redes sociales específicas para este proyecto.</p>
+            </article>
+        </section>
+    </main>
+
     <script src="./src/game.js" type="module"></script>
 </body>
 

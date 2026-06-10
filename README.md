@@ -1,70 +1,99 @@
-# GDD: Galactic Plague: Awakening (Galaga Clone)
+# Galaga Reimagined
 
-## 1. Ficha Técnica
-*   **Título:** Galactic Plague: Awakening.
-*   **Género:** Fixed Shooter / Arcade Clásico.
-*   **Plataforma:** Web (PC) – Phaser 3.
-*   **Modo de juego:** Un jugador (Individual).
-*   **Referencia Original:** Galaga (Namco, 1981).
+> **Trabajo universitario** desarrollado para la asignatura de PVLI como proyecto individual de convocatoria extraordinaria.  
+> El juego es una reinterpretación académica de la lógica arcade de *Galaga* implementada en **Phaser 3**.
 
----
+## Enlaces
 
-## 2. Concepto del Juego
-El jugador controla una nave espacial en la parte inferior de la pantalla y debe defenderse de oleadas de insectos alienígenas que entran en formación y realizan ataques en picado[cite: 1]. El objetivo es obtener la mayor puntuación posible antes de perder todas las vidas.
+- **Repositorio de GitHub:** `https://github.com/theligero/Galaga`
+- **Versión pública en GitHub Pages:** `https://theligero.github.io/Galaga/`
 
----
+## Descripción general
 
-## 3. Mecánicas Principales (Core Gameplay)
+**Galaga Reimagined** es un juego arcade de disparos de pantalla fija. El jugador controla una nave situada en la parte inferior del área de juego y debe destruir oleadas de enemigos alienígenas que entran en formación, se colocan en una parrilla superior y realizan ataques en picado hacia el jugador.
 
-### 3.1. Movimiento y Control
-*   **Nave del Jugador:** Movimiento restringido al eje horizontal (X) mediante las teclas de flechas o `A` y `D`.
-*   **Disparo:** Acción de disparo simple mediante la tecla `Espacio`. Solo se permite un número limitado de proyectiles simultáneos en pantalla para mantener el balance arcade.
+El objetivo principal es sobrevivir el mayor tiempo posible, superar fases y conseguir la puntuación más alta. El proyecto busca reproducir elementos reconocibles de *Galaga*: formación de enemigos, ataques descendentes, disparo limitado, sistema de puntuación, vidas, HUD lateral, pantalla de inicio, introducción de fase y pantalla de Game Over.
 
-### 3.2. Enemigos y Comportamiento
-*   **Entrada en Pantalla:** Los enemigos entran por los laterales y la parte superior siguiendo trayectorias curvas predefinidas hasta ocupar su lugar en la formación.
-*   **Formación Estática:** Los enemigos se mantienen en una formación organizada en la parte superior.
-*   **Ataque (Diving):** De forma aleatoria, grupos de enemigos abandonan la formación para realizar ataques en picado hacia el jugador, disparando proyectiles durante el trayecto.
-*   **Tipos de Enemigos:**
-    *   *Abejas (Drones):* Enemigos básicos de baja puntuación.
-    *   *Mariposas (Guards):* Enemigos con trayectorias de ataque más erráticas.
-    *   *Comandantes (Boss Galaga):* Requieren dos impactos para ser destruidos y pueden intentar capturar la nave del jugador.
+## Capturas del juego
 
-### 3.3. Sistema de Vidas y Puntuación
-*   El jugador comienza con 3 vidas.
-*   Se obtienen puntos al destruir enemigos, con bonificaciones mayores si el enemigo es destruido mientras está en modo "picado".
+### Menú principal
 
----
+![Menú principal](assets/screenshots/menu.png)
 
-## 4. Arquitectura Técnica (Phaser 3)
+### Partida
 
-### 4.1. Gestión de Escenas
-El proyecto seguirá una estructura de escenas profesional para asegurar la escalabilidad:
-*   **BootScene:** Carga de assets iniciales y configuración del motor.
-*   **MainMenuScene:** Pantalla de título con opción de inicio.
-*   **GameScene:** Escena principal donde ocurre la lógica de juego.
-*   **GameOverScene:** Visualización de puntuación final y opción de reinicio.
+![Partida](assets/screenshots/gameplay.png)
 
-### 4.2. Sistemas de Phaser a utilizar
-*   **Arcade Physics:** Gestión de colisiones entre proyectiles y naves.
-*   **Phaser.Curves.Path:** Implementación de las trayectorias de entrada complejas características de Galaga.
-*   **Groups & Object Pooling:** Uso de `Phaser.Physics.Arcade.Group` para balas y enemigos, optimizando la memoria mediante el reciclaje de objetos (kill/revive).
-*   **Tweens:** Animaciones suaves para la formación y efectos visuales.
-*   **JSON Data:** Uso de archivos JSON para definir las oleadas (waves) y los parámetros de los enemigos, separando la lógica del contenido.
+## Controles
 
----
+- **Mover nave:** flechas izquierda/derecha o teclas `A` / `D`.
+- **Disparar:** `Espacio`.
+- **Empezar partida:** `Espacio`, `Enter` o clic.
+- **Volver al menú desde Game Over:** cualquier tecla o clic.
 
-## 5. Assets (Recursos)
-*   **Gráficos:** Spritesheets en pixel-art (basados en el arcade original) para naves, enemigos y explosiones.
-*   **Sonidos:** Efectos FX para disparos y explosiones, junto con música chiptune para el inicio de nivel.
-*   **Interfaz (UI):** Marcador de puntos en la esquina superior y contador de vidas mediante iconos de naves.
+## Estructura del repositorio
 
----
+```txt
+index.html
+README.md
+GDD.md
+architecture.md
+assets.md
+/css
+/lib
+/src
+/assets
+  /fonts
+  /sounds
+  /sprites
+  /screenshots
+/types
+```
 
-## 6. Plan de Desarrollo (Cronograma de 4 Semanas)
+## Documentación
 
-*   **Semana 1:** Configuración del repositorio y arquitectura de escenas[cite: 1, 2]. Implementación del movimiento del jugador y sistema de disparo básico (Pooling de balas).
-*   **Semana 2:** Sistema de enemigos: trayectorias curvas (Paths) y lógica de formación. Definición de oleadas mediante JSON.
-*   **Semana 3:** Lógica de colisiones, IA de ataque (Diving) y sistema de vidas/puntuación.
-*   **Semana 4:** Pulido visual, efectos de sonido y preparación de la documentación de entrega.
+- [GDD.md](GDD.md): documento de diseño del juego.
+- [architecture.md](architecture.md): arquitectura técnica, diagrama de escenas, clases y flujo de juego.
+- [assets.md](assets.md): dirección artística, listado de recursos y procedencia.
 
----
+## Tecnologías usadas
+
+- **JavaScript ES Modules**
+- **Phaser 3**
+- **Arcade Physics**
+- **Tweens**
+- **Time Events**
+- **Object pooling mediante grupos de Phaser**
+
+## Estado del proyecto
+
+El proyecto incluye actualmente:
+
+- Menú inicial con estética arcade.
+- Precarga de sprites, audio y fuente.
+- Escena jugable con HUD lateral.
+- Nave del jugador con movimiento horizontal y disparo limitado.
+- Formación de enemigos.
+- Entrada animada de enemigos a la formación.
+- Ataques en picado.
+- Disparos enemigos.
+- Sistema de vidas, puntuación y récord local.
+- Pantalla de Game Over.
+- Avance de fase al eliminar todos los enemigos.
+
+## Autoría
+
+- **Autor:** Ignacio Ligero Martín
+- **Estudio:** Estudio Individual PVLI
+- **Asignatura:** PVLI
+- **Tipo de entrega:** Proyecto individual
+
+## Redes sociales
+
+No se han creado redes sociales específicas para este proyecto.
+
+## Créditos
+
+Proyecto académico inspirado en el arcade original *Galaga* de Namco.  
+Los recursos usados se documentan en [assets.md](assets.md).  
+Este proyecto no es una versión comercial ni oficial de *Galaga*.

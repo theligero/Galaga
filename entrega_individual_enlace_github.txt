@@ -1,0 +1,13 @@
+Entrega individual - enlace a GitHub
+
+Repositorio:
+https://github.com/theligero/Galaga
+
+Página pública de GitHub Pages:
+https://theligero.github.io/Galaga/
+
+Autor:
+Ignacio Ligero Martín
+
+Proyecto:
+Galaga Reimagined
