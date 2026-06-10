@@ -74,5 +74,3 @@ La fuente se declara en `css/game.css` mediante `@font-face` y se espera explíc
 Los recursos incluidos proceden de la base/plantilla del proyecto y están documentados junto al archivo `LICENSE` incluido en el repositorio, que indica licencia MIT y autoría de **Carlos León** para el material original del repositorio.
 
 El proyecto utiliza estos assets con finalidad académica y no comercial. La estética está inspirada en *Galaga*, pero el proyecto se presenta como una reinterpretación universitaria, no como producto oficial ni comercial.
-
-> Nota para la entrega: si el equipo docente exige procedencia individual por cada sprite o sonido, conviene completar esta sección con el enlace exacto de descarga de cada asset externo usado. En el estado actual del repositorio, la procedencia verificable incluida es la licencia del proyecto base.

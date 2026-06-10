@@ -139,7 +139,7 @@ export default class Level extends Phaser.Scene {
     const stageText = this.add.text(this.PLAYFIELD_WIDTH / 2, 102, `STAGE ${this.stage}`, {
       fontFamily: 'arcade',
       fontSize: '14px',
-      color: '#ffffff'
+      color: '#00ffea'
     }).setOrigin(0.5);
 
     this.time.delayedCall(900, () => {
@@ -276,6 +276,8 @@ export default class Level extends Phaser.Scene {
     this.updateHUD();
     this.clearBullets();
 
+    this.sound.play('player_dead', { volume: 0.65 });
+    
     const explosion = this.add.sprite(this.player.x, this.player.y, 'player_explosion');
     explosion.play('player_exploding');
     explosion.once('animationcomplete', () => explosion.destroy());

@@ -25,6 +25,7 @@ export default class Boot extends Phaser.Scene {
     this.load.audio('enemy_dead_1', 'sounds/enemy_dead_1.mp3');
     this.load.audio('enemy_dead_2', 'sounds/enemy_dead_2.mp3');
     this.load.audio('stage_intro', 'sounds/stage_intro.mp3');
+    this.load.audio('player_dead', 'sounds/player_dead.mp3');
   }
 
   create() {
