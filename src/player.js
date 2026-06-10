@@ -6,7 +6,6 @@ export default class Player extends Phaser.GameObjects.Sprite {
     this.scene.physics.add.existing(this);
 
     this.body.setCollideWorldBounds(true);
-    // Ajustamos la hitbox
     this.body.setSize(12, 12);
     this.body.setOffset(2, 2);
 
@@ -14,7 +13,6 @@ export default class Player extends Phaser.GameObjects.Sprite {
     this.bullets = bulletGroup;
     this.isAlive = true;
 
-    // Añadimos soporte dual: flechas y AD
     this.cursors = this.scene.input.keyboard.createCursorKeys();
     this.aKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
     this.dKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
@@ -41,7 +39,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
   preUpdate(t, dt) {
     super.preUpdate(t, dt);
 
-    if (!this.isAlive) {
+    if (!this.scene.gameActive || !this.isAlive) {
       if (this.body) this.body.setVelocity(0, 0);
       return;
     }
@@ -49,16 +47,15 @@ export default class Player extends Phaser.GameObjects.Sprite {
     const left = this.cursors.left.isDown || this.aKey.isDown;
     const right = this.cursors.right.isDown || this.dKey.isDown;
 
-    // Movimiento estrictamente horizontal
     if (left && !right) {
       this.body.setVelocityX(-this.speed);
     } else if (right && !left) {
       this.body.setVelocityX(this.speed);
     } else {
-      this.body.setVelocity(0);
+      this.body.setVelocityX(0);
     }
 
-    // Lógica de disparo con cadencia ajustada
+    // Disparo tipo arcade: cadencia limitada y pocas balas simultáneas.
     if (this.fireKey.isDown && t > this.lastFired) {
       const bullet = this.bullets.get();
       if (bullet) {
@@ -68,5 +65,4 @@ export default class Player extends Phaser.GameObjects.Sprite {
       }
     }
   }
-  
 }

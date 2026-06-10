@@ -5,10 +5,9 @@ export default class Bullet extends Phaser.Physics.Arcade.Sprite {
 
     // Método que llamaremos desde el nivel para disparar
     fire(x, y) {
-        this.body.reset(x, y);      // Resetea las físicas
-        this.setActive(true);
-        this.setVisible(true);
-        this.setVelocityY(-400);    // Velocidad lineal hacia arriba 
+        // Rehabilita la física por si la bala estaba desactivada en el pool.
+        this.enableBody(true, x, y, true, true);
+        this.setVelocityY(-400);    // Velocidad lineal hacia arriba
     }
 
     // Phaser ejecuta automáticamente preUpdate si configuramos bien el grupo
@@ -17,8 +16,7 @@ export default class Bullet extends Phaser.Physics.Arcade.Sprite {
 
         // Si la bala sale de la pantalla por arriba, la devolvemos al pool
         if (this.y <= -10) {
-            this.setActive(false);
-            this.setVisible(false);
+            this.disableBody(true, true);
         }
     }
 }

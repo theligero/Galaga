@@ -1,31 +1,41 @@
-/**
- * Escena de fin de juego. Cuando se han recogido todas las estrellas, se presenta un
- * texto que indica que el juego se ha acabado.
- * Si se pulsa cualquier tecla, se vuelve a iniciar el juego.
- */
 export default class End extends Phaser.Scene {
-  /**
-   * Constructor de la escena
-   */
   constructor() {
     super({ key: 'end' });
   }
 
-  /**
-   * Creación de la escena. Tan solo contiene el texto que indica que el juego se ha acabado
-   */
-  create() {
-    this.add.text(500, 250, 'Se acabó!\nPulsa cualquier tecla para volver a jugar')
-        .setOrigin(0.5, 0.5)  // Colocamos el pivote en el centro de cuadro de texto 
-        .setAlign('center');  // Centramos el texto dentro del cuadro de texto
+  create(data) {
+    this.cameras.main.setBackgroundColor('#000000');
 
-    // Añadimos el listener para cuando se haya pulsado una tecla. Es probable que no
-    // lleguemos a ver el mensaje porque veníamos con una tecla pulsada del juego (al 
-    // ir moviendo al jugador). Se puede mejorar añadiendo un temporizador que 
-    // añada este listener pasado un segundo
-    this.input.keyboard.on('keydown', function (event) { 
-      this.scene.start('level');
-    }, this);
+    const score = data?.score || 0;
+    const highScore = data?.highScore || score;
+
+    this.add.text(this.game.config.width / 2, 58, 'GAME OVER', {
+      fontFamily: 'arcade',
+      fontSize: '22px',
+      color: '#ff5555'
+    }).setOrigin(0.5);
+
+    this.add.text(this.game.config.width / 2, 104, `SCORE   ${String(score).padStart(6, '0')}`, {
+      fontFamily: 'arcade',
+      fontSize: '10px',
+      color: '#ffffff'
+    }).setOrigin(0.5);
+
+    this.add.text(this.game.config.width / 2, 126, `HIGH    ${String(highScore).padStart(6, '0')}`, {
+      fontFamily: 'arcade',
+      fontSize: '10px',
+      color: '#ffff66'
+    }).setOrigin(0.5);
+
+    this.add.text(this.game.config.width / 2, 174, 'PRESS ANY KEY', {
+      fontFamily: 'arcade',
+      fontSize: '9px',
+      color: '#ffffff'
+    }).setOrigin(0.5);
+
+    this.time.delayedCall(700, () => {
+      this.input.keyboard.once('keydown', () => this.scene.start('menu'));
+      this.input.once('pointerdown', () => this.scene.start('menu'));
+    });
   }
-
 }
